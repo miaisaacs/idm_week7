@@ -123,13 +123,22 @@ if(F){
 ## [LQ1]: run 3 times and plot results for each run
 # run and save 3 times
 
-
-
-
-
-
-
-
+if(T){
+  ## EXAMPLE CODE: to aggregate the results to weekly interval
+  colnames(res)=c('time','tm_step','S','E','I','H','FF','R','cumI')
+  num_wk=ceiling(res[nrow(res),'time'])
+  wkly.res=matrix(NA,num_wk,9); colnames(wkly.res)=c('time','tm_step','S','E','I','H','FF','R','cumI')
+  num_events=NULL;
+  for(wk in 1:num_wk){
+    idx=tail(which(res[,'time']<wk),1);
+    wkly.res[wk,]=res[idx,];
+  }
+  # compute the weekly incidency
+  wklyInci=wkly.res[-1,'cumI']-wkly.res[-nrow(wkly.res),'cumI']
+  # plot it
+  par(mfrow = c(1,1), mar = c(2.5, 2.5, .5, .5), mgp = c(1.5, .3, 0), tck = -.02)
+  plot(wklyInci, type = 'l', ylab='Weekly incidence',xlab='Week')
+}
 
 ## [LQ2] RUN TIME VS. SIMULATION TIME
 ## Run the model for 9, 11, 13, 15, and 17 weeks, respectively, 
@@ -152,6 +161,22 @@ z.H=1; # intervention in the hospital
 z.F=1; # intervention in safe burial
 
 
+if(T){
+  ## EXAMPLE CODE: to aggregate the results to weekly interval
+  colnames(res)=c('time','tm_step','S','E','I','H','FF','R','cumI')
+  num_wk=ceiling(res[nrow(res),'time'])
+  wkly.res=matrix(NA,num_wk,9); colnames(wkly.res)=c('time','tm_step','S','E','I','H','FF','R','cumI')
+  num_events=NULL;
+  for(wk in 1:num_wk){
+    idx=tail(which(res[,'time']<wk),1);
+    wkly.res[wk,]=res[idx,];
+  }
+  # compute the weekly incidency
+  wklyInci=wkly.res[-1,'cumI']-wkly.res[-nrow(wkly.res),'cumI']
+  # plot it
+  par(mfrow = c(1,1), mar = c(2.5, 2.5, .5, .5), mgp = c(1.5, .3, 0), tck = -.02)
+  plot(wklyInci, type = 'l', ylab='Weekly incidence',xlab='Week')
+}
 
 
 
